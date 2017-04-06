@@ -75,21 +75,57 @@
       }
       static function findAuthor($search_author_id)
       {
-        $new_Books = array();
-        $returned_author= $GLOBALS['DB']->prepare("SELECT * FROM author WHERE author_id = :id");
-        $returned_author->bindParam(':id', $search_author_id, PDO::PARAM_STR);
-        $returned_author->execute();
-        foreach($returned_author as $author){
-          $first = $author['first'];
-          $last = $author['last'];
-          $author_id = $author['author_id'];
-          $id = $author['id'];
-          if($author_id == $search_author_id){
-          $new_author= new Author($first,$last,$author_id, $id);
-          array_push($new_Books,$new_author);
+          $new_Books = array();
+          $returned_author= $GLOBALS['DB']->prepare("SELECT * FROM authors WHERE id = :id");
+          $returned_author->bindParam(':id', $search_author_id, PDO::PARAM_STR);
+          $returned_author->execute();
+          foreach($returned_author as $author){
+            $first = $author['first'];
+            $last = $author['last'];
+            $id = $author['id'];
+          if($id == $search_author_id){
+            $new_author = new Author($first,$last, $id);
+            array_push($new_Books,$new_author);
           }
         }
+        return $new_Books;
     }
+    function update_first($new_first)
+    {
+        $executed = $GLOBALS['DB']->("UPDATE authors SET first = '{$new_first}' WHERE id = {$this->getId()};");
+        if($executed){
+          $this->setFirst($new_name);
+          return true;
+        }else{
+          return false;
+        }
+    }
+    function update_last($new_last)
+    {
+        $executed = $GLOBALS['DB']->("UPDATE authors SET last = '{$new_last}' WHERE id = {$this->getId()};");
+        if($executed){
+          $this->setLast($new_last);
+          return true;
+        }else{
+          return false;
+        }
+    }
+    static function findAuthorByName($last)
+    {
+      $authors = array();
+      $returned_authors = $GLOBALS['DB']->prepare("SELECT * FROM authors WHERE last = :last");
+      $returned_authors->bindParam(':last', $last, PDO::PARAM_STR);
+      $returned_authors->execute();
+      foreach($returned_authors as $author){
+        $id=$author['last'];
+        if($id == $last){
+        $newAuthor = new Author($author['first'],$author['last'], $author['id']);
+        array_push($authors,$newAuthor);
+      }
+      }
+      return $authors;
+    }
+
   }
 
  ?>

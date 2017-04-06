@@ -85,13 +85,48 @@
         }
       }
       function findAuthors(){
-        $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN books_authors ON (book.id = books_authors.book_id)JOIN authors ON(books_authors.author_id=author.id) WHERE book.id = {$this->getId()};");
+        $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN books_authors ON (books.id = books_authors.book_id)JOIN authors ON(books_authors.author_id = authors.id) WHERE books.id = {$this->getId()};");
         $authors = array();
         foreach($returned_authors as $author){
           $newAuthor = new Author($author['first'], $author['last'],$author['id']);
           array_push($authors, $newAuthor);
         }
         return $authors;
+      }
+      static function findbookByTitle($title)
+      {
+        $books = array();
+        $returned_books = $GLOBALS['DB']->prepare("SELECT * FROM books WHERE title = :title");
+        $returned_books->bindParam(':title', $title, PDO::PARAM_STR);
+        $returned_books->execute();
+        foreach($returned_books as $book){
+          $id=$book['title'];
+          if($id == $title){
+          $newAuthor = new Author($book['first'],$book['title'], $book['id']);
+          array_push($books,$newAuthor);
+        }
+        }
+        return $books;
+      }
+      function update_title($new_title)
+      {
+          $executed = $GLOBALS['DB']->("UPDATE books SET title = '{$new_title}' WHERE id = {$this->getId()};");
+          if($executed){
+            $this->setFirst($new_name);
+            return true;
+          }else{
+            return false;
+          }
+      }
+      function update_last($new_location)
+      {
+          $executed = $GLOBALS['DB']->("UPDATE books SET location = '{$new_location}' WHERE id = {$this->getId()};");
+          if($executed){
+            $this->setLast($new_location);
+            return true;
+          }else{
+            return false;
+          }
       }
     }
 

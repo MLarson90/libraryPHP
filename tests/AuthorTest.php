@@ -52,6 +52,17 @@ class AuthorTest extends PHPUnit_Framework_TestCase
       $result = Author::getAll();
       $this->assertEquals($result, [$newAuthor2]);
     }
+    function test_findAuthor()
+    {
+        $newAuthor = new Author ("max", "black");
+        $newAuthor->save();
+        $newAuthor2= new Author ("jak", "Black");
+        $newAuthor2->save();
+        $id=$newAuthor->getId();
+        $result= Author::findAuthor($id);
+        $this->assertEquals([$newAuthor], $result);
+    }
+
 
   }
 
