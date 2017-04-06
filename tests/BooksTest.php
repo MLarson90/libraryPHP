@@ -12,10 +12,9 @@ class BooksTest extends PHPUnit_Framework_TestCase
 {
   protected function tearDown()
   {
-    Author::deleteAll();
     Member::deleteAll();
+    Author::deleteAll();
     Books::deleteAll();
-
   }
     function test_Save()
     {
@@ -57,12 +56,12 @@ class BooksTest extends PHPUnit_Framework_TestCase
       $newBook = new Books ("Cannery Row", "E20");
       $newBook->save();
       $newAuthor = new Author ("Jack", "London");
+      $newAuthor->save();
       $newBook->addAuthor($newAuthor);
-      $newBook->save();
-      $result = Books::getAll();
-      $this->assertEquals($result, [$newBook]);
+      $result = $newBook->findAuthors();
+      $this->assertEquals($result, [$newAuthor]);
     }
-  
+
   }
 
 

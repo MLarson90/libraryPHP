@@ -52,7 +52,7 @@ class AuthorTest extends PHPUnit_Framework_TestCase
       $result = Author::getAll();
       $this->assertEquals($result, [$newAuthor2]);
     }
-  
+
   }
 
 

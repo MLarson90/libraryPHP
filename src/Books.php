@@ -56,12 +56,15 @@
       static function deleteAll()
       {
         $deleteAll = $GLOBALS['DB']->exec("DELETE FROM books;");
-        if ($deleteAll)
-        {
-          return true;
-        }else {
+        if ($deleteAll){
           return false;
         }
+        $executed = $GLOBALS['DB']->exec("DELETE FROM books_authors;");
+      if (!$executed){
+        return false;
+      }else{
+        return true;
+      }
       }
       function deleteBook()
       {
@@ -74,16 +77,15 @@
       }
       function addAuthor($authorId)
       {
-        $executed=$GLOBALS['DB']->exec("INSERT INTO book_author (book_id, author_id) VALUES ({$this->getId()}, {$authorId->getId()};");
+        $executed=$GLOBALS['DB']->exec("INSERT INTO books_authors (book_id, author_id) VALUES ({$this->getId()}, {$authorId->getId()});");
         if($executed){
-          $this->id = $GLOBALS['DB']->lastInsertId();
           return true;
         } else{
           return false;
         }
       }
-      function findAuthor(){
-        $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN books_authors ON (books.id = books_authors.book_id)JOIN authors ON(books_authors.author_id = author.id) WHERE book.id = {$this->getId()};");
+      function findAuthors(){
+        $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN books_authors ON (book.id = books_authors.book_id)JOIN authors ON(books_authors.author_id=author.id) WHERE book.id = {$this->getId()};");
         $authors = array();
         foreach($returned_authors as $author){
           $newAuthor = new Author($author['first'], $author['last'],$author['id']);
