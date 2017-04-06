@@ -3,13 +3,17 @@
 {
     private $first;
     private $last;
+    private $username;
+    private $password;
     private $id;
 
 
-    function __construct($first, $last, $id=null)
+    function __construct($first, $last, $username, $password, $id=null)
       {
         $this->first =$first;
         $this->last =$last;
+        $this->username = $username;
+        $this->password = $password;
         $this->id = $id;
       }
       function getFirst()
@@ -28,13 +32,29 @@
       {
          $this->last = $new_last;
       }
+      function getUsername()
+      {
+          return $this->username;
+      }
+      function setUsername($new_name)
+      {
+        $this->username = $new_name;
+      }
+      function getPassword()
+      {
+        return $this->password;
+      }
+      function setPassword($new_pass)
+      {
+        $this->password = $new_pass;
+      }
       function getId()
       {
         return $this->id;
       }
       function save()
       {
-        $executed = $GLOBALS['DB']->exec("INSERT INTO patrons (first, last) VALUES ('{$this->getFirst()}', '{$this->getLast()}'); ");
+        $executed = $GLOBALS['DB']->exec("INSERT INTO patrons (first, last, username, password) VALUES ('{$this->getFirst()}', '{$this->getLast()}','{$this->getUsername()}','{$this->getPassword()}'); ");
           if($executed){
             $this->id = $GLOBALS['DB']->lastInsertId();
             return true;
@@ -51,6 +71,21 @@
           array_push($patrons, $newPatron);
         }
           return $patrons;
+      }
+      static function login($username, $password)
+      {
+        $login = $GLOBALS['DB']->prepare("SELECT * FROM patrons WHERE username = :username;");
+        $login->bindParam(':username', $username, PDO::PARAM_STR);
+        $login->execute();
+        foreach($login as $check){
+          $user = $check['username'];
+          $pass = $check['password'];
+        if(($user == $username) && ($pass == $password)){
+          return true;
+        }else{
+          return false;
+          }
+        }
       }
       static function deleteAll()
       {

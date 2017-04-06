@@ -1,3 +1,15 @@
 {% include "top.html.twig" %}
 <h1> {{ book.getTitle }} </h1>
+{% set authors = book.findAuthors %}
+{% for author in authors %}
+<h3> Author: {{ author.getFirst }} {{ author.getLast }}</h3>
+{% endfor %}
+{% set quanitys = book.findQuanity %}
+{% for quanity in quanitys %}
+<h4> Quanity on hand: {{ quanity }}</h4>
+{% endfor %}
+{% set totals = book.findQuanity %}
+{% for total in totals %}
+<h4> Total quanity: {{ total }}</h4>
+{% endfor %}
 {% include "bottom.html.twig" %}

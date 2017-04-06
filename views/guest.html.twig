@@ -1,0 +1,33 @@
+{% include 'top.html.twig' %}
+<div class="row">
+  <div class = "col-lg-6">
+    <h2> Sign In</h2>
+    <form action="/login" method= "post">
+      <div class = "form-group">
+      <label for="login">User Name</label>
+      <input class="form-control" id="login" name="login" type="text" required>
+      <label for="password">Password</label>
+      <input class="form-control" id="password" name="password" type="password" min="5" max="15" required>
+      <button class="btn btn-primary" type="submit">Log in</button>
+    </div>
+  </div>
+  </form>
+    <div class= "col-lg-6">
+      <h2> Or Create An Account </h2>
+      <form action="/createuser" method= "post">
+        <div class = "form-group">
+        <label for="newFirst">First Name</label>
+        <input class="form-control" id="newFirst" name="newFirst" type="text" required>
+        <label for="newLast">Last Name</label>
+        <input class="form-control" id="newLast" name="newLast" type="text" required>
+        <div class = "form-group">
+        <label for="newLogin">User Name</label>
+        <input class="form-control" id="newLogin" name="newLogin" type="text" required>
+        <label for="newPassword">Password</label>
+        <input class="form-control" id="newPassword" name="newPassword" type="password" min="5" max="15" required >
+        <button class="btn btn-primary" type="submit">Create Profile</button>
+        </div>
+      </div>
+    </div>
+  </form>
+{% include 'bottom.html.twig' %}

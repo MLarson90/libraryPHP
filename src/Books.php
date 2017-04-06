@@ -84,6 +84,10 @@
           return false;
         }
       }
+      function addTotalQuanity($quanity)
+      {
+          $executed = $GLOBALS['DB']->exec("INSERT INTO totalcopies (book_id, total) VALUES ({$this->getId()}, {$quanity});");
+      }
       function addQuanity($quanity)
       {
         $executed = $GLOBALS['DB']->exec("INSERT INTO copies (book_id, quanity) VALUES ({$this->getId()}, {$quanity})");
@@ -119,6 +123,20 @@
           array_push($authors, $newAuthor);
         }
         return $authors;
+      }
+      function findQuanity(){
+        $query = $GLOBALS['DB']->query("SELECT quanity FROM copies WHERE book_id = {$this->getId()};");
+        $quanitys = $query->fetchAll(PDO::FETCH_ASSOC);
+        foreach($quanitys as $quanity){
+          return $quanity;
+        }
+      }
+      function findTotalQuanity(){
+        $query = $GLOBALS['DB']->query("SELECT total FROM totalcopies WHERE book_id = {$this->getId()};");
+        $quanitys = $query->fetchAll(PDO::FETCH_ASSOC);
+        foreach($quanitys as $quanity){
+          return $quanity;
+        }
       }
       static function findbookByTitle($title)
       {

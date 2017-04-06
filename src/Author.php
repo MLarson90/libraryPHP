@@ -75,7 +75,6 @@
       }
       static function findAuthor($search_author_id)
       {
-          $new_Books = array();
           $returned_author= $GLOBALS['DB']->prepare("SELECT * FROM authors WHERE id = :id");
           $returned_author->bindParam(':id', $search_author_id, PDO::PARAM_STR);
           $returned_author->execute();
@@ -85,10 +84,18 @@
             $id = $author['id'];
           if($id == $search_author_id){
             $new_author = new Author($first,$last, $id);
-            array_push($new_Books,$new_author);
+            return $new_author;
           }
         }
-        return $new_Books;
+    }
+    function findBooks(){
+      $returned_books = $GLOBALS['DB']->query("SELECT books.* FROM authors join books_authors ON (authors.id = books_authors.book_id) JOIN books ON(books_authors.book_id = books.id) WHERE authors.id = {$this->getId()};");
+      $books = array();
+      foreach($returned_books as $book){
+        $newbook = new Books ($book['title'], $book['location'], $book['id']);
+        array_push($books, $newbook);
+      }
+      return $books;
     }
     function update_first($new_first)
     {

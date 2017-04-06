@@ -1,0 +1,11 @@
+{% include "top.html.twig" %}
+
+
+<h1> {{ author.getFirst }} {{ author.getLast}} </h1>
+<h3>Books in library</h3>
+{% for book in books %}
+<ul>
+<li>{{book.getTitle}}</li>
+</ul>
+{% endfor %}
+{% include "bottom.html.twig" %}
