@@ -16,5 +16,27 @@
   $app->get("/", function() use ($app) {
     return $app['twig']->render('index.html.twig');
   });
+  $app->get('/admin', function() use ($app){
+    return $app['twig']->render('admin.html.twig');
+  });
+  $app->get('/allbooks', function() use ($app){
+    return $app['twig']->render('allbooks.html.twig', array('steve' => Books::getAll()));
+  });
+  $app->post('/addbook', function() use ($app){
+    $newBook = new Books ($_POST['title'], $_POST['loc']);
+    $newBook->save();
+    $newAuthor = new Author ($_POST['first'], $_POST['last']);
+    $newAuthor->save();
+    $quanity = $_POST['quanity'];
+    $newBook->addAuthor($newAuthor);
+    $newBook->addQuanity($quanity);
+    $author=$newBook->findAuthors();
+    var_dump($author);
+    return $app['twig']->render('bookConfirm.html.twig', array('book'=> $newBook, 'author' => $newAuthor, 'quanity' => $quanity));
+  });
+  $app->get('/book{id}', function($id) use ($app){
+    $book = Books::findBookbyId($id);
+    return $app['twig']->render('book.html.twig', array('book' => $book));
+  });
   return $app;
  ?>

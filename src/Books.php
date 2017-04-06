@@ -84,6 +84,33 @@
           return false;
         }
       }
+      function addQuanity($quanity)
+      {
+        $executed = $GLOBALS['DB']->exec("INSERT INTO copies (book_id, quanity) VALUES ({$this->getId()}, {$quanity})");
+        if($executed){
+          return true;
+        }else{
+          return false;
+        }
+      }
+      function checkout()
+      {
+        $executed = $GLOBALS['DB']->exec("UPDATE copies SET quanity = quanity -1 WHERE book_id = {$this->id}");
+        if($exectued){
+          return true;
+        }else{
+          return false;
+        }
+      }
+      function return()
+      {
+        $executed = $GLOBALS['DB']->exec("UPDATE copies SET quanity = quanity +1 WHERE book_id = {$this->id}");
+        if($exectued){
+          return true;
+        }else{
+          return false;
+        }
+      }
       function findAuthors(){
         $returned_authors = $GLOBALS['DB']->query("SELECT authors.* FROM books JOIN books_authors ON (books.id = books_authors.book_id)JOIN authors ON(books_authors.author_id = authors.id) WHERE books.id = {$this->getId()};");
         $authors = array();
@@ -110,7 +137,7 @@
       }
       function update_title($new_title)
       {
-          $executed = $GLOBALS['DB']->("UPDATE books SET title = '{$new_title}' WHERE id = {$this->getId()};");
+          $executed = $GLOBALS['DB']->exec("UPDATE books SET title = '{$new_title}' WHERE id = {$this->getId()};");
           if($executed){
             $this->setFirst($new_name);
             return true;
@@ -120,13 +147,27 @@
       }
       function update_last($new_location)
       {
-          $executed = $GLOBALS['DB']->("UPDATE books SET location = '{$new_location}' WHERE id = {$this->getId()};");
+          $executed = $GLOBALS['DB']->exec("UPDATE books SET location = '{$new_location}' WHERE id = {$this->getId()};");
           if($executed){
             $this->setLast($new_location);
             return true;
           }else{
             return false;
           }
+      }
+      static function findBookbyId($id)
+      {
+
+        $returned_books = $GLOBALS['DB']->prepare("SELECT * FROM books WHERE id = :id");
+        $returned_books->bindParam(':id', $id, PDO::PARAM_STR);
+        $returned_books->execute();
+        foreach($returned_books as $book){
+          $bookid=$book['id'];
+          if($bookid == $id){
+          $book = new Books($book['title'],$book['location'], $book['id']);
+            return $book;
+        }
+        }
       }
     }
 

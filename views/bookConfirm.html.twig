@@ -1,0 +1,9 @@
+{% include "top.html.twig" %}
+
+<h4> Title: {{ book.getTitle() }}</h4>
+<h4> Author: {{ author.getFirst() }} {{ author.getLast() }}</h4>
+<h4> Location: {{ book.getLocation() }}
+<h4> Quanity: {{ quanity }} </h4>
+
+<p><a href = "#">Edit</a> or <a href ="/admin">Confirm</a></p>
+{% include "bottom.html.twig" %}

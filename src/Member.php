@@ -73,7 +73,7 @@
       }
       function update_first($new_first)
       {
-          $executed = $GLOBALS['DB']->("UPDATE patrons SET first = '{$new_first}' WHERE id = {$this->getId()};");
+          $executed = $GLOBALS['DB']->exec("UPDATE patrons SET first = '{$new_first}' WHERE id = {$this->getId()};");
           if($executed){
             $this->setFirst($new_name);
             return true;
@@ -83,7 +83,7 @@
       }
       function update_last($new_last)
       {
-          $executed = $GLOBALS['DB']->("UPDATE patrons SET last = '{$new_last}' WHERE id = {$this->getId()};");
+          $executed = $GLOBALS['DB']->exec("UPDATE patrons SET last = '{$new_last}' WHERE id = {$this->getId()};");
           if($executed){
             $this->setLast($new_last);
             return true;
