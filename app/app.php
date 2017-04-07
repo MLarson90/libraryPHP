@@ -25,6 +25,9 @@
   $app->get('/guest', function() use ($app){
     return $app['twig']->render('guest.html.twig');
   });
+  $app->get('/guestloggedin', function() use ($app){
+    return $app['twig']->render('guestloggedin.html.twig');
+  });
   $app->get('/allbooks', function() use ($app){
     return $app['twig']->render('allbooks.html.twig', array('steve' => Books::getAll()));
   });
@@ -34,14 +37,22 @@
   $app->post('/addbook', function() use ($app){
     $newBook = new Books ($_POST['title'], $_POST['loc']);
     $newBook->save();
-    $newAuthor = new Author ($_POST['first'], $_POST['last']);
-    $newAuthor->save();
     $quanity = $_POST['quanity'];
-    $newBook->addAuthor($newAuthor);
     $newBook->addQuanity($quanity);
     $newBook->addTotalQuanity($quanity);
+    $authors_first = Author::getAuthorFirstArray();
+    $authors_last = Author::getAuthorLastArray();
+    if((in_array($_POST['last'], $authors_last)) && (in_array($_POST['first'], $authors_first))){
+      $OldAuthor = Author::findAuthorByName($_POST['last']);
+      $newBook->addAuthor($OldAuthor);
+      return $app['twig']->render('bookConfirm.html.twig', array('book'=> $newBook, 'author' => $OldAuthor, 'quanity' => $quanity));
+    }else{
+    $newAuthor = new Author ($_POST['first'], $_POST['last']);
+    $newAuthor->save();
     $author=$newBook->findAuthors();
+    $newBook->addAuthor($newAuthor);
     return $app['twig']->render('bookConfirm.html.twig', array('book'=> $newBook, 'author' => $newAuthor, 'quanity' => $quanity));
+  }
   });
   $app->get('/book{id}', function($id) use ($app){
     $book = Books::findBookbyId($id);

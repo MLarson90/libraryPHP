@@ -130,7 +130,24 @@
       }
       }
     }
-
+    function getAuthorFirstArray(){
+      $first_array= array();
+      $executed = $GLOBALS['DB']->query("SELECT * FROM authors");
+      $results = $executed->fetchAll(PDO::FETCH_ASSOC);
+      foreach($results as $result){
+        array_push($first_array, $result['first']);
+      }
+      return $first_array;
+    }
+    function getAuthorLastArray(){
+      $last_array = array();
+      $executed = $GLOBALS['DB']->query("SELECT * FROM authors");
+      $results = $executed->fetchAll(PDO::FETCH_ASSOC);
+      foreach($results as $result){
+        array_push($last_array, $result['last']);
+      }
+      return $last_array;
+    }
   }
 
  ?>
