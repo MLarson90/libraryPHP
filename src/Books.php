@@ -140,18 +140,16 @@
       }
       static function findbookByTitle($title)
       {
-        $books = array();
         $returned_books = $GLOBALS['DB']->prepare("SELECT * FROM books WHERE title = :title");
         $returned_books->bindParam(':title', $title, PDO::PARAM_STR);
         $returned_books->execute();
         foreach($returned_books as $book){
           $id=$book['title'];
           if($id == $title){
-          $newAuthor = new Author($book['first'],$book['title'], $book['id']);
-          array_push($books,$newAuthor);
+          $newAuthor = new Books($book['title'],$book['location'], $book['id']);
+          return $newAuthor;
         }
         }
-        return $books;
       }
       function update_title($new_title)
       {

@@ -17,6 +17,9 @@
     return $app['twig']->render('index.html.twig');
   });
   $app->get('/admin', function() use ($app){
+    return $app['twig']->render('adminlogin.html.twig');
+  });
+  $app->get('/adminback', function() use ($app){
     return $app['twig']->render('admin.html.twig');
   });
   $app->get('/guest', function() use ($app){
@@ -61,6 +64,26 @@
     }else{
       return $app['twig']->render('denied.html.twig');
     }
+  });
+  $app->post('/addlogin', function() use ($app){
+    $check = Member::login($_POST['login'], $_POST['password']);
+    if($check == true){
+      return $app['twig']->render('admin.html.twig');
+    }else{
+      return $app['twig']->render('denied.html.twig');
+    }
+  });
+  $app->post('/search', function() use ($app){
+    $title = $_POST['searchTitle'];
+    $book = Books::findbookByTitle($title);
+     if($book != ""){
+       return $app['twig']->render('book.html.twig', array('book' => $book));
+     }else{
+       $last = $_POST['searchLast'];
+       $author = Author::findAuthorByName($last);
+       $booksFromAuthor = $author->findBooks();
+       return $app['twig']->render('author.html.twig', array('author'=>$author, 'books'=> $booksFromAuthor));
+     }
   });
   return $app;
  ?>

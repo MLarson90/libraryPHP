@@ -119,7 +119,6 @@
     }
     static function findAuthorByName($last)
     {
-      $authors = array();
       $returned_authors = $GLOBALS['DB']->prepare("SELECT * FROM authors WHERE last = :last");
       $returned_authors->bindParam(':last', $last, PDO::PARAM_STR);
       $returned_authors->execute();
@@ -127,10 +126,9 @@
         $id=$author['last'];
         if($id == $last){
         $newAuthor = new Author($author['first'],$author['last'], $author['id']);
-        array_push($authors,$newAuthor);
+        return $newAuthor;
       }
       }
-      return $authors;
     }
 
   }

@@ -5,12 +5,12 @@
   <h3>View all <a href='/allbooks'>books</a></h3>
   <h3>View all <a href='/allauthors'>authors</a></h3>
   <h3>Search book by:</h3>
-  <form action="/search{id}" method= "post">
+  <form action="/search" method= "post">
     <div class = "form-group">
     <label for="searchLast">Author's last name</label>
     <input class="form-control" id="searchLast" name="searchLast" type="text">
     <label for="searchTitle">or Title</label>
-    <input class="form-control" id="searchTitle" name="searchTitle" type="number">
+    <input class="form-control" id="searchTitle" name="searchTitle" type="text">
   </div>
     <button class="btn btn-primary" type="submit">Search</button>
   </form>

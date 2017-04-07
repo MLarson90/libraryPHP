@@ -3,9 +3,9 @@
 
 <h1> {{ author.getFirst }} {{ author.getLast}} </h1>
 <h3>Books in library</h3>
-{% for book in books %}
+{% for booky in books %}
 <ul>
-<li>{{book.getTitle}}</li>
+<li><a href="/book{{ booky.getId }}">{{booky.getTitle}}</a></li>
 </ul>
 {% endfor %}
 {% include "bottom.html.twig" %}
