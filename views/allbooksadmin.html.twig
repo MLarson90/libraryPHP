@@ -1,0 +1,14 @@
+{% include "top.html.twig" %}
+  {% if steve is not empty %}
+  <h1> View all titles in library </h1>
+  {% for steves in steve %}
+  <ul>
+    {% set author = steves.findAuthors %}
+    <li><a href="bookadmin{{steves.getId}}">{{ steves.getTitle }}</a> by <a href ='author{{ author[0].getId }}'>{{ author[0].getFirst }} {{ author[0].getLast }}</a> {{ steves.getLocation }}</li>
+    <p><a href="/edit">Edit</a><a href="/delete">Delete</a></p>
+  </ul>
+  {% endfor %}
+  {% else %}
+  <h4> Oh no! There seems to be no books in the inventory </h4>
+  {% endif %}
+{% include "bottomad.html.twig" %}

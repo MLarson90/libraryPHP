@@ -29,10 +29,17 @@
     return $app['twig']->render('guestloggedin.html.twig');
   });
   $app->get('/allbooks', function() use ($app){
-    return $app['twig']->render('allbooks.html.twig', array('steve' => Books::getAll()));
+    $result = Books::getAll();
+    return $app['twig']->render('allbooks.html.twig', array('susans' => $result));
+  });
+  $app->get('/allbooksadmin', function() use ($app){
+    return $app['twig']->render('allbooksadmin.html.twig', array('steve' => Books::getAll()));
   });
   $app->get('/allauthors', function() use ($app){
     return $app['twig']->render('allauthors.html.twig', array('steve' => Author::getAll()));
+  });
+  $app->get('/allauthorsadmin', function() use ($app){
+    return $app['twig']->render('allauthorsadmin.html.twig', array('steve' => Author::getAll()));
   });
   $app->post('/addbook', function() use ($app){
     $newBook = new Books ($_POST['title'], $_POST['loc']);
@@ -57,6 +64,10 @@
   $app->get('/book{id}', function($id) use ($app){
     $book = Books::findBookbyId($id);
     return $app['twig']->render('book.html.twig', array('book' => $book));
+  });
+  $app->get('/bookadmin{id}', function($id) use ($app){
+    $book = Books::findBookbyId($id);
+    return $app['twig']->render('bookadmin.html.twig', array('book' => $book));
   });
   $app->get('/author{id}', function($id) use ($app){
     $authors = Author::findAuthor($id);
